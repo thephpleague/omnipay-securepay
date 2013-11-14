@@ -2,7 +2,7 @@
 
 namespace Omnipay\SecurePay\Message;
 
-use Omnipay\TestCase;
+use Omnipay\Tests\TestCase;
 
 class DirectPostPurchaseRequestTest extends TestCase
 {

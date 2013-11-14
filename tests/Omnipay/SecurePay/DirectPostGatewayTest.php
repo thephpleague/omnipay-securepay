@@ -2,7 +2,7 @@
 
 namespace Omnipay\SecurePay;
 
-use Omnipay\GatewayTestCase;
+use Omnipay\Tests\GatewayTestCase;
 
 class DirectPostGatewayTest extends GatewayTestCase
 {
