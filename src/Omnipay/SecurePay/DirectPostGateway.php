@@ -11,6 +11,8 @@ use Omnipay\Common\AbstractGateway;
  */
 class DirectPostGateway extends AbstractGateway
 {
+    public $transparentRedirect = true;
+
     public function getName()
     {
         return 'SecurePay Direct Post';
