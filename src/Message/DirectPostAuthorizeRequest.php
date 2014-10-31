@@ -11,7 +11,7 @@ class DirectPostAuthorizeRequest extends DirectPostAbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'returnUrl');
+        $this->validate('amount', 'returnUrl', 'card');
 
         $data = array();
         $data['EPS_MERCHANT'] = $this->getMerchantId();
@@ -25,6 +25,10 @@ class DirectPostAuthorizeRequest extends DirectPostAbstractRequest
         $data['EPS_CALLBACKURL'] = $this->getReturnUrl();
         $data['EPS_REDIRECT'] = 'TRUE';
         $data['EPS_CURRENCY'] = $this->getCurrency();
+        $data['EPS_CARDNUMBER'] = $this->getCard()->getNumber();
+        $data['EPS_EXPIRYMONTH'] = $this->getCard()->getExpiryMonth();
+        $data['EPS_EXPIRYYEAR'] = $this->getCard()->getExpiryYear();
+        $data['EPS_CCV'] = $this->getCard()->getCvv();
 
         return $data;
     }
