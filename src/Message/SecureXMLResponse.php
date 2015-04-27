@@ -71,4 +71,15 @@ class SecureXMLResponse extends AbstractResponse
             ? (string) $this->data->Payment->TxnList->Txn->txnID
             : null;
     }
+
+    /**
+     * @return string|null Settlement date when the funds will be settled into the
+     *                     merchants account.
+     */
+    public function getSettlementDate()
+    {
+        return $this->hasTransaction()
+            ? (string) $this->data->Payment->TxnList->Txn->settlementDate
+            : null;
+    }
 }
