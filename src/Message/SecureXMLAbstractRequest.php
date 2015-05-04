@@ -11,6 +11,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
     public $liveEndpoint = 'https://api.securepay.com.au/xmlapi/payment';
 
     protected $requestType = 'Payment';
+    protected $requiredFields = array();
 
     /**
      * Set the messageID on the request.
