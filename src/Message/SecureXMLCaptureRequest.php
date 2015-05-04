@@ -18,7 +18,7 @@ class SecureXMLCaptureRequest extends SecureXMLAbstractRequest
 
     public function getData()
     {
-        $xml = $this->getBaseXML();
+        $xml = $this->getBasePaymentXML();
 
         $xml->Payment->TxnList->Txn->addChild('preauthID', $this->getPreauthId());
 

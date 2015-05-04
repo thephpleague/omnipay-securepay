@@ -102,4 +102,9 @@ class SecureXMLGateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLRefundRequest', $parameters);
     }
+
+    public function echoTest(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLEchoTestRequest', $parameters);
+    }
 }

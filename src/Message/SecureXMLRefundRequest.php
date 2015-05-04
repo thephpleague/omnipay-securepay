@@ -17,7 +17,7 @@ class SecureXMLRefundRequest extends SecureXMLAbstractRequest
 
     public function getData()
     {
-        $xml = $this->getBaseXML();
+        $xml = $this->getBasePaymentXML();
         $xml->Payment->TxnList->Txn->addChild('txnID', $this->getTransactionReference());
 
         return $xml;

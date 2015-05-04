@@ -10,6 +10,8 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
     public $testEndpoint = 'https://test.securepay.com.au/xmlapi/payment';
     public $liveEndpoint = 'https://api.securepay.com.au/xmlapi/payment';
 
+    protected $requestType = 'Payment';
+
     /**
      * Set the messageID on the request.
      *
@@ -67,7 +69,19 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         $merchantInfo->addChild('merchantID', $this->getMerchantId());
         $merchantInfo->addChild('password', $this->getTransactionPassword());
 
-        $xml->addChild('RequestType', 'Payment'); // Not related to the transaction type
+        $xml->addChild('RequestType', $this->requestType); // Not related to the transaction type
+
+        return $xml;
+    }
+
+    /**
+     * XML template of a SecurePayMessage Payment.
+     *
+     * @return \SimpleXMLElement SecurePayMessage with transaction details.
+     */
+    protected function getBasePaymentXML()
+    {
+        $xml = $this->getBaseXML();
 
         $payment = $xml->addChild('Payment');
         $txnList = $payment->addChild('TxnList');
@@ -85,13 +99,14 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
     }
 
     /**
-     * @return \SimpleXMLElement SecurePayMessage with card details.
+     * @return \SimpleXMLElement SecurePayMessage with transaction and card
+     * details.
      */
-    protected function getBaseXMLWithCard()
+    protected function getBasePaymentXMLWithCard()
     {
         $this->getCard()->validate();
 
-        $xml = $this->getBaseXML();
+        $xml = $this->getBasePaymentXML();
 
         $card = $xml->Payment->TxnList->Txn->addChild('CreditCardInfo');
         $card->addChild('cardNumber', $this->getCard()->getNumber());

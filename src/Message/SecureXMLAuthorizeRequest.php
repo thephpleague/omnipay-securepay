@@ -17,6 +17,6 @@ class SecureXMLAuthorizeRequest extends SecureXMLAbstractRequest
 
     public function getData()
     {
-        return $this->getBaseXMLWithCard();
+        return $this->getBasePaymentXMLWithCard();
     }
 }
