@@ -31,9 +31,11 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
      */
     public function getMessageId()
     {
-        return empty($this->getParameter('messageId'))
-            ? substr(md5(microtime()), 0, 30)
-            : $this->getParameter('messageId');
+        if (empty($this->getParameter('messageId'))) {
+            $this->setMessageId(substr(md5(microtime()), 0, 30));
+        }
+
+        return $this->getParameter('messageId');
     }
 
     public function sendData($data)
