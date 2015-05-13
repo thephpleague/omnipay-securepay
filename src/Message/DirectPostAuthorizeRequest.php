@@ -22,7 +22,7 @@ class DirectPostAuthorizeRequest extends DirectPostAbstractRequest
         $data['EPS_TIMESTAMP'] = gmdate('YmdHis');
         $data['EPS_FINGERPRINT'] = $this->generateFingerprint($data);
         $data['EPS_RESULTURL'] = $this->getReturnUrl();
-        $data['EPS_CALLBACKURL'] = $this->getReturnUrl();
+        $data['EPS_CALLBACKURL'] = $this->getNotifyUrl();
         $data['EPS_REDIRECT'] = 'TRUE';
         $data['EPS_CURRENCY'] = $this->getCurrency();
 
