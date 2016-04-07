@@ -65,7 +65,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         $xml = new \SimpleXMLElement('<SecurePayMessage/>');
 
         $messageInfo = $xml->addChild('MessageInfo');
-        $messageInfo->addChild('messageID', $this->getMessageId());
+        $messageInfo->messageID = $this->getMessageId();
         $messageInfo->addChild('messageTimestamp', $this->generateTimestamp());
         $messageInfo->addChild('timeoutValue', 60);
         $messageInfo->addChild('apiVersion', 'xml-4.2');
@@ -98,7 +98,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         $transaction->addChild('txnSource', 23); // Must always be 23 for SecureXML.
         $transaction->addChild('amount', $this->getAmountInteger());
         $transaction->addChild('currency', $this->getCurrency());
-        $transaction->addChild('purchaseOrderNo', $this->getTransactionId());
+        $transaction->purchaseOrderNo = $this->getTransactionId();
 
         return $xml;
     }
