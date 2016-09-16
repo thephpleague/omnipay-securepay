@@ -9,6 +9,8 @@
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
 processing library for PHP 5.3+. This package implements SecurePay support for Omnipay.
 
+A fork version of Ominipay SecurePay. The purpose of this repo is to support Periodic and Triggered API.
+
 ## Installation
 
 Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it
