@@ -25,6 +25,10 @@ class DirectPostAuthorizeRequest extends DirectPostAbstractRequest
         $data['EPS_CALLBACKURL'] = $this->getNotifyUrl() ?: $this->getReturnUrl();
         $data['EPS_REDIRECT'] = 'TRUE';
         $data['EPS_CURRENCY'] = $this->getCurrency();
+        $data['EPS_CARDNUMBER'] = $this->getCard()->getNumber();
+        $data['EPS_EXPIRYMONTH'] = $this->getCard()->getExpiryMonth();
+        $data['EPS_EXPIRYYEAR'] = $this->getCard()->getExpiryYear();
+        $data['EPS_CCV'] = $this->getCard()->getCvv();
 
         $data = array_replace($data, $this->getCardData());
 
