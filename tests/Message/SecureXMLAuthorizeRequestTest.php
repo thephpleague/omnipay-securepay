@@ -65,7 +65,7 @@ class SecureXMLAuthorizeRequestTest extends TestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getTransactionReference());
-        $this->assertSame('908', $response->getCode());
+        $this->assertSame('51', $response->getCode());
         $this->assertSame('Insufficient Funds', $response->getMessage());
     }
 
