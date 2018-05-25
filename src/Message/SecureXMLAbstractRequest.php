@@ -7,10 +7,22 @@ namespace Omnipay\SecurePay\Message;
  */
 abstract class SecureXMLAbstractRequest extends AbstractRequest
 {
+    /**
+     * @var string
+     */
     public $testEndpoint = 'https://test.api.securepay.com.au/xmlapi/payment';
+    /**
+     * @var string
+     */
     public $liveEndpoint = 'https://api.securepay.com.au/xmlapi/payment';
 
+    /**
+     * @var string
+     */
     protected $requestType = 'Payment';
+    /**
+     * @var array
+     */
     protected $requiredFields = array();
 
     /**
@@ -41,11 +53,20 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         return $this->getParameter('messageId');
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data->asXML())->send();
+        $httpResponse = $this->httpClient->request('POST', $this->getEndpoint(), [
+            'Accept' => 'application/xml',
+            'Content-Type' => 'application/xml',
+        ], $data->asXML());
 
-        return $this->response = new SecureXMLResponse($this, $httpResponse->xml());
+        $xml = new \SimpleXMLElement($httpResponse->getBody()->getContents());
+
+        return $this->response = new SecureXMLResponse($this, $xml);
     }
 
     /**
