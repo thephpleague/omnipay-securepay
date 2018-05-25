@@ -11,6 +11,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
      * @var string
      */
     public $testEndpoint = 'https://test.api.securepay.com.au/xmlapi/payment';
+
     /**
      * @var string
      */
@@ -20,6 +21,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
      * @var string
      */
     protected $requestType = 'Payment';
+
     /**
      * @var array
      */
@@ -53,16 +55,9 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         return $this->getParameter('messageId');
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     */
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->request('POST', $this->getEndpoint(), [
-            'Accept' => 'application/xml',
-            'Content-Type' => 'application/xml',
-        ], $data->asXML());
+        $httpResponse = $this->httpClient->request('POST', $this->getEndpoint(), [], $data->asXML());
 
         $xml = new \SimpleXMLElement($httpResponse->getBody()->getContents());
 
