@@ -25,7 +25,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
     /**
      * @var array
      */
-    protected $requiredFields = array();
+    protected $requiredFields = [];
 
     /**
      * Set the messageID on the request.
