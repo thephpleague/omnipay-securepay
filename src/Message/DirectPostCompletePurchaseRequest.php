@@ -2,6 +2,7 @@
 
 namespace Omnipay\SecurePay\Message;
 
+use function GuzzleHttp\Psr7\parse_query;
 use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
@@ -11,10 +12,9 @@ class DirectPostCompletePurchaseRequest extends DirectPostAbstractRequest
 {
     public function getData()
     {
-        $data = $this->httpRequest->request->all();
-
-        if ($this->generateResponseFingerprint($data) !== $this->httpRequest->request->get('fingerprint')) {
-            throw new InvalidRequestException('Invalid fingerprint');
+        $data = $this->httpRequest->query->all();
+        if ($this->generateResponseFingerprint($data) !== $this->httpRequest->get('fingerprint')) {
+           throw new InvalidRequestException('Invalid fingerprint');
         }
 
         return $data;
@@ -22,6 +22,7 @@ class DirectPostCompletePurchaseRequest extends DirectPostAbstractRequest
 
     public function generateResponseFingerprint($data)
     {
+
         $fields = implode(
             '|',
             array(

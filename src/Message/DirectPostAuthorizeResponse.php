@@ -3,12 +3,13 @@
 namespace Omnipay\SecurePay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
+use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
 
 /**
  * SecurePay Direct Post Authorize Response
  */
-class DirectPostAuthorizeResponse extends AbstractResponse
+class DirectPostAuthorizeResponse extends AbstractResponse implements RedirectResponseInterface
 {
     protected $redirectUrl;
 

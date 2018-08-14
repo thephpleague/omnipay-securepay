@@ -7,5 +7,5 @@ namespace Omnipay\SecurePay\Message;
  */
 class DirectPostPurchaseRequest extends DirectPostAuthorizeRequest
 {
-    public $txnType = '0';
+    public $txnType = '2';
 }
