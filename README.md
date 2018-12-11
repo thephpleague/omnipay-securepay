@@ -21,7 +21,8 @@ composer require league/omnipay omnipay/securepay
 
 The following gateways are provided by this package:
 
-* SecurePay
+* SecurePay_DirectPost
+* SecurePay_SecureXML
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
