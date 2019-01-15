@@ -95,6 +95,9 @@ class SecureXMLGateway extends AbstractGateway
 
     public function purchase(array $parameters = array())
     {
+        if (array_key_exists('cardReference', $parameters)) {
+            return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLStoredCardPurchaseRequest', $parameters);
+        }
         return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLPurchaseRequest', $parameters);
     }
 
@@ -106,5 +109,20 @@ class SecureXMLGateway extends AbstractGateway
     public function echoTest(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLEchoTestRequest', $parameters);
+    }
+
+    public function createCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLStoreCardRequest', $parameters);
+    }
+
+    public function deleteCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLDeleteCardRequest', $parameters);
+    }
+
+    public function updateCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLEditCardRequest', $parameters);
     }
 }
