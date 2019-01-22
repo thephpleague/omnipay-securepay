@@ -5,4 +5,5 @@ Content-Type: text/xml;charset=ISO-8859-1
 Content-Length: 929
 Connection: close
 
-<?xml version="1.0" encoding="UTF-8"?><SecurePayMessage><MessageInfo><messageID>8af793f9af34bea0cf40f5fc011e0c</messageID><messageTimestamp>20041904161959849000+600</messageTimestamp><apiVersion>xml-4.2</apiVersion></MessageInfo><RequestType>Payment</RequestType><MerchantInfo><merchantID>ABC0001</merchantID></MerchantInfo><Status><statusCode>510</statusCode><statusDescription>Unable To Connect To Server</statusDescription></Status></SecurePayMessage>
+<?xml version="1.0" encoding="UTF-8"?>
+<SecurePayMessage><MessageInfo><messageID>8af793f9af34bea0cf40f5fc011e0c</messageID><messageTimestamp>20041904161959849000+600</messageTimestamp><apiVersion>xml-4.2</apiVersion></MessageInfo><RequestType>Payment</RequestType><MerchantInfo><merchantID>ABC0001</merchantID></MerchantInfo><Status><statusCode>510</statusCode><statusDescription>Unable To Connect To Server</statusDescription></Status></SecurePayMessage>
