@@ -26,15 +26,20 @@ class SecureXMLStoredCardPurchaseRequest extends SecureXMLAbstractRequest
     /**
      * @var string
      */
+    protected $requestType = 'Periodic';
+
+    /**
+     * @var string
+     */
     protected $apiVersion = 'spxml-4.2';
 
     public function getData()
     {
         $xml = $this->getBaseStoredCardXML('trigger');
-
-        $xml->addChild('transactionReference', $this->getTransactionId());
-        $xml->addChild('amount', $this->getAmountInteger());
-        $xml->addChild('periodicType', 1);
+        $periodicItem = $xml->Periodic->PeriodicList->PeriodicItem;
+        $periodicItem->addChild('transactionReference', $this->getTransactionId());
+        $periodicItem->addChild('amount', $this->getAmountInteger());
+        $periodicItem->addChild('periodicType', 1); // Appendix A "Add a Payor ID"
 
         return $xml;
     }

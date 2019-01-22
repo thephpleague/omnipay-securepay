@@ -18,6 +18,8 @@ class SecureXMLResponse extends AbstractResponse
     {
         // As per appendix F, 000 means the message was processed correctly
         if ((string) $this->data->Status->statusCode !== '000'
+                && ((string) $this->data->Status->statusCode !== '0'
+                && (string) $this->data->Status->statusDescription !== 'Normal')
             || ($this->hasTransaction()
                 && (string) $this->data->Payment->TxnList->Txn->approved !== 'Yes')
             || ($this->hasPeriodic()

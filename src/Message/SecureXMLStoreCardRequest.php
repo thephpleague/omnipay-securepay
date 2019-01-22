@@ -39,12 +39,14 @@ class SecureXMLStoreCardRequest extends SecureXMLAbstractRequest
         $xml = $this->getBaseStoredCardXML('add');
 
         $this->getCard()->validate();
-        $card = $xml->Periodic->PeriodicList->PeriodicItem->addChild('CreditCardInfo');
+        $periodicItem = $xml->Periodic->PeriodicList->PeriodicItem;
+        $periodicItem->addChild('amount', $this->getAmountInteger());
+        $periodicItem->addChild('periodicType', 4); // Appendix A "Add a Payor ID"
+        $card = $periodicItem->addChild('CreditCardInfo');
         $card->addChild('cardNumber', $this->getCard()->getNumber());
         $card->addChild('cvv', $this->getCard()->getCvv());
         $card->addChild('expiryDate', $this->getCard()->getExpiryDate('m/y'));
-        $xml->addChild('amount', $this->getAmountInteger());
-        $xml->addChild('periodicType', 4); // Appendix A "Add a Payor ID"
+        $card->addChild('recurringFlag', 'no');
 
         return $xml;
     }
