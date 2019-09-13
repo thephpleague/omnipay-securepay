@@ -28,6 +28,11 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
     protected $requiredFields = [];
 
     /**
+     * @var array
+     */
+    protected $apiVersion = 'xml-4.2';
+
+    /**
      * Set the messageID on the request.
      *
      * This is returned intact on any response so you could add a local
@@ -84,7 +89,7 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         $messageInfo->messageID = $this->getMessageId();
         $messageInfo->addChild('messageTimestamp', $this->generateTimestamp());
         $messageInfo->addChild('timeoutValue', 60);
-        $messageInfo->addChild('apiVersion', 'xml-4.2');
+        $messageInfo->addChild('apiVersion', $this->apiVersion);
 
         $merchantInfo = $xml->addChild('MerchantInfo');
         $merchantInfo->addChild('merchantID', $this->getMerchantId());
@@ -114,7 +119,27 @@ abstract class SecureXMLAbstractRequest extends AbstractRequest
         $transaction->addChild('txnSource', 23); // Must always be 23 for SecureXML.
         $transaction->addChild('amount', $this->getAmountInteger());
         $transaction->addChild('currency', $this->getCurrency());
-        $transaction->purchaseOrderNo = $this->getTransactionId();
+        $transaction->addChild('purchaseOrderNo', $this->getTransactionId());
+
+        return $xml;
+    }
+
+    /**
+     * XML template of a SecurePayMessage Payment using a stored card (Payor ID).
+     *
+     * @return \SimpleXMLElement SecurePayMessage with transaction details.
+     */
+    protected function getBaseStoredCardXML($actionType)
+    {
+        $xml = $this->getBaseXML();
+
+        $periodic= $xml->addChild('Periodic');
+        $periodicList = $periodic->addChild('PeriodicList');
+        $periodicList->addAttribute('count', 1);
+        $periodicItem = $periodicList->addChild('PeriodicItem');
+        $periodicItem->addAttribute('ID', 1); // One transaction per request supported by current API.
+        $periodicItem->addChild('actionType', $actionType);
+        $periodicItem->addChild('clientID', $this->getCardReference());
 
         return $xml;
     }
