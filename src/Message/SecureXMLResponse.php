@@ -17,12 +17,26 @@ class SecureXMLResponse extends AbstractResponse
     public function isSuccessful()
     {
         // As per appendix F, 000 means the message was processed correctly
-        if ((string) $this->data->Status->statusCode !== '000'
-            || ($this->hasTransaction()
-                && (string) $this->data->Payment->TxnList->Txn->approved !== 'Yes')) {
+        if ( $this->isFailedCode() || $this->isNotApproved() ) {
             return false;
         }
 
+        return true;
+    }
+
+    private function isFailedCode()
+    {
+        return (string) $this->data->Status->statusCode !== '000' && (string) $this->data->Status->statusCode !== '0';
+    }
+
+    private function isNotApproved()
+    {
+        if ($this->hasTransaction())
+            return (string) $this->data->Payment->TxnList->Txn->approved !== 'Yes';
+        if ($this->hasPeriodic())
+            return (string) $this->getResponseItem()->responseCode !== '00'
+                && (string) $this->getResponseItem()->responseCode !== '08'
+                && (string) $this->getResponseItem()->responseCode !== '77';
         return true;
     }
 
@@ -40,15 +54,42 @@ class SecureXMLResponse extends AbstractResponse
     }
 
     /**
+     * Determine if we have had periodic payment information returned.
+     *
+     * @note For certain errors a Periodic element is returned but has an empty
+     * TxnList so this will tell us if we actually have a transaction to check.
+     *
+     * @return bool True if we have a transaction.
+     */
+    protected function hasPeriodic()
+    {
+        return isset($this->data->Periodic->PeriodicList->PeriodicItem);
+    }
+
+    /**
+     * Return the response item, transaction or periodicItem or null
+     *
+     * @return transaction or periodicItem or null
+     */
+    protected function getResponseItem()
+    {
+        if ($this->hasTransaction())
+            return $this->data->Payment->TxnList->Txn;
+        if ($this->hasPeriodic())
+            return $this->data->Periodic->PeriodicList->PeriodicItem;
+        return null;
+    }
+
+    /**
      * @link https://www.securepay.com.au/_uploads/files/SecurePay_Response_Codes.pdf
      *
      * @return string Gateway failure code or transaction code if available.
      */
     public function getCode()
     {
-        return $this->hasTransaction()
-            ? (string) $this->data->Payment->TxnList->Txn->responseCode
-            : (string) $this->data->Status->statusCode;
+        if ($this->hasTransaction() || $this->hasPeriodic())
+            return (string) $this->getResponseItem()->responseCode;
+        return (string) $this->data->Status->statusCode;
     }
 
     /**
@@ -57,9 +98,9 @@ class SecureXMLResponse extends AbstractResponse
      */
     public function getMessage()
     {
-        return $this->hasTransaction()
-            ? (string) $this->data->Payment->TxnList->Txn->responseText
-            : (string) $this->data->Status->statusDescription;
+        if ($this->hasTransaction() || $this->hasPeriodic())
+            return (string) $this->getResponseItem()->responseText;
+        return (string) $this->data->Status->statusDescription;
     }
 
     /**
@@ -67,9 +108,9 @@ class SecureXMLResponse extends AbstractResponse
      */
     public function getTransactionReference()
     {
-        return $this->hasTransaction()
-            ? (string) $this->data->Payment->TxnList->Txn->txnID
-            : null;
+        if ($this->hasTransaction() || $this->hasPeriodic())
+            return (string) $this->getResponseItem()->txnID;
+        return null;
     }
 
     /**
@@ -78,8 +119,8 @@ class SecureXMLResponse extends AbstractResponse
      */
     public function getSettlementDate()
     {
-        return $this->hasTransaction()
-            ? (string) $this->data->Payment->TxnList->Txn->settlementDate
-            : null;
+        if ($this->hasTransaction() || $this->hasPeriodic())
+            return (string) $this->getResponseItem()->settlementDate;
+        return null;
     }
 }

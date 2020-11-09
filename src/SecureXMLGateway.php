@@ -107,4 +107,14 @@ class SecureXMLGateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLEchoTestRequest', $parameters);
     }
+
+    public function createCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLAddPayorRequest', $parameters);
+    }
+
+    public function deleteCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\SecurePay\Message\SecureXMLDeletePayorRequest', $parameters);
+    }
 }
